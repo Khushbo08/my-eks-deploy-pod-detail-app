@@ -8,10 +8,10 @@ const port = 5000;
 
 // RDS database connection
 const db = mysql.createConnection({
-    host: 'your-rds-endpoint',
-    user: 'username',
-    password: 'password',
-    database: 'your-database'
+    host: 'mydbinstance.czhtyfllgyoa.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'uythgfsctgvf123w',
+    database: 'mydbinstance'
 });
 
 // Kubernetes client
