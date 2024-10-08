@@ -4,9 +4,11 @@ FROM node:14
 # Create app directory.
 WORKDIR /usr/src/app
 
-# Install app dependencies.
+# Copy package.json and package-lock.json files.
 COPY package*.json ./
-RUN npm install
+
+# Install dependencies.
+RUN npm install --legacy-peer-deps
 
 # Copy the app source code.
 COPY . .
