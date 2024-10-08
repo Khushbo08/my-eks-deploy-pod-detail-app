@@ -49,12 +49,12 @@ jobs:
       # Step 7: Deploy backend and frontend to EKS using kubectl
       - name: Deploy backend to EKS
         run: |
-          kubectl set image deployment/backend backend=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
+          kubectl set image deployment/backend backend=920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
           kubectl apply -f kubernetes/backend-deployment.yaml
           kubectl apply -f kubernetes/backend-service.yaml
 
       - name: Deploy frontend to EKS
         run: |
-          kubectl set image deployment/frontend frontend=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-frontend:latest
+          kubectl set image deployment/frontend frontend=920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-frontend:latest
           kubectl apply -f kubernetes/frontend-deployment.yaml
           kubectl apply -f kubernetes/frontend-service.yaml
