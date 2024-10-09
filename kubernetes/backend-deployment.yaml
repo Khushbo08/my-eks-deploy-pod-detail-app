@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  labels:
+    app: backend
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -14,9 +16,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
-        env:
-        - name: AWS_ACCOUNT_ID
-          value: "920726643262" 
+        image: 920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${GITHUB_SHA} # Use GitHub SHA as image tag
         ports:
-        - containerPort: 5000
+        - containerPort: 8080
+      # imagePullSecrets:
+      # - name: aws-ecr # Secret to pull image from ECR
