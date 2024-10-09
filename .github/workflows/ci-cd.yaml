@@ -83,19 +83,19 @@ jobs:
         run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
 
     # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS
+      - name: Deploy to EKS backend
         run: |
          kubectl apply -f ./kubernetes/backend-deployment.yaml 
          kubectl apply -f ./kubernetes/backend-service.yaml
 
      # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS
+      - name: Deploy to EKS frontend
         run: |
          kubectl apply -f ./kubernetes/frontend-deployment.yaml 
          kubectl apply -f ./kubernetes/frontend-service.yaml
 
      # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS
+      - name: Deploy to EKS nginx
         run: |
          kubectl apply -f ./kubernetes/nginx-deployment.yaml 
          kubectl apply -f ./kubernetes/nginx-service.yaml
