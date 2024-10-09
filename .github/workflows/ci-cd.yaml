@@ -46,6 +46,8 @@ jobs:
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
 
+      
+
       # Step 7: Deploy backend and frontend to EKS using kubectl
       - name: Deploy backend to EKS
         run: |
