@@ -94,5 +94,11 @@ jobs:
          kubectl apply -f ./kubernetes/frontend-deployment.yaml 
          kubectl apply -f ./kubernetes/frontend-service.yaml
 
+     # Deploy the application to EKS using deployment.yaml and service.yaml
+      - name: Deploy to EKS
+        run: |
+         kubectl apply -f ./kubernetes/nginx-deployment.yaml 
+         kubectl apply -f ./kubernetes/nginx-service.yaml
+
 
 
