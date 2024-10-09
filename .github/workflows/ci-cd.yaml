@@ -28,11 +28,20 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
       # Step 4: Build and push the backend Docker image to ECR
+      # - name: Build, tag, and push backend image
+      #   run: |
+      #     docker build -t backend:${{ github.sha }} ./backend
+      #     docker tag backend:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+      #     docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+      
+      # Step 4: Build and push the backend Docker image to ECR
       - name: Build, tag, and push backend image
         run: |
-          docker build -t backend:${{ github.sha }} ./backend
-          docker tag backend:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+           docker build -t backend:${{ github.sha }} ./backend
+           docker tag backend:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+           docker tag backend:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
+           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
 
       # Step 5: Build and push the frontend Docker image to ECR
       - name: Build, tag, and push frontend image
