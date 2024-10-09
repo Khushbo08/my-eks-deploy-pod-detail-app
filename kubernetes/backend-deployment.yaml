@@ -19,5 +19,4 @@ spec:
         image: 920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${GITHUB_SHA} # Use GitHub SHA as image tag
         ports:
         - containerPort: 8080
-      # imagePullSecrets:
-      # - name: aws-ecr # Secret to pull image from ECR
+   
