@@ -8,6 +8,7 @@
     "dependencies": {
       "express": "^4.17.1",
       "mysql2": "^2.2.5",
-      "k8s": "^0.2.0"
+      "k8s": "^0.2.0",
+      "@kubernetes/client-node": "^0.16.3"
     }
   }
