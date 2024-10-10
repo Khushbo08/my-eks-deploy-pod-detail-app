@@ -41,24 +41,23 @@ jobs:
           docker tag frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-frontend:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-eks-deploy-pod-detail-app-frontend:latest
 
- 
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     # Define the steps to be executed in the job
     steps:
-    # Checkout the repository to access source code
+      # Step 1: Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-     # Set up kubectl with the specified version
+      # Step 2: Set up kubectl
       - uses: azure/setup-kubectl@v3
         with:
-          version: 'v1.28.1' # default is latest stable
-        id: install
+          version: 'v1.28.1'
 
-    # Step 2: Set up AWS CLI and configure AWS credentials
+      # Step 3: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -66,40 +65,27 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }} 
 
-
-    # Authenticate Docker with Amazon ECR using AWS credentials
-      - name: Login to Amazon ECR
-        run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-
-    # Replace the tag in deployment.yaml with the GitHub SHA
-      - name: Replace the tag in deployment.yaml
-        run: sed -i "s|${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPO_NAME_BACKEND }}:latest|${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPO_NAME_BACKEND }}:${{ github.sha }}|" ./kubernetes/backend-deployment.yaml
-    
-    # Replace the tag in deployment.yaml with the GitHub SHA
-      - name: Replace the tag in deployment.yaml
-        run: sed -i "s|${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPO_NAME_FRONTEND }}:latest|${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ secrets.ECR_REPO_NAME_FRONTEND }}:${{ github.sha }}|" ./kubernetes/frontend-deployment.yaml
-
-    # Configure kubectl for the specified EKS cluster
+      # Step 4: Configure kubectl for the EKS cluster
       - name: Configure kubectl for EKS
         run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
 
-    # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS backend
+      # Step 5: Deploy the backend to EKS
+      - name: Deploy backend to EKS
         run: |
-         kubectl apply -f ./kubernetes/backend-deployment.yaml 
-         kubectl apply -f ./kubernetes/backend-service.yaml
+          kubectl apply -f ./kubernetes/backend-deployment.yaml 
+          kubectl apply -f ./kubernetes/backend-service.yaml
 
-     # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS frontend
+      # Step 6: Deploy the frontend to EKS
+      - name: Deploy frontend to EKS
         run: |
-         kubectl apply -f ./kubernetes/frontend-deployment.yaml 
-         kubectl apply -f ./kubernetes/frontend-service.yaml
+          kubectl apply -f ./kubernetes/frontend-deployment.yaml 
+          kubectl apply -f ./kubernetes/frontend-service.yaml
 
-     # Deploy the application to EKS using deployment.yaml and service.yaml
-      - name: Deploy to EKS nginx
+      # Step 7: Deploy Nginx to EKS
+      - name: Deploy Nginx to EKS
         run: |
-         kubectl apply -f ./kubernetes/nginx-deployment.yaml 
-         kubectl apply -f ./kubernetes/nginx-service.yaml
+          kubectl apply -f ./kubernetes/nginx-deployment.yaml 
+          kubectl apply -f ./kubernetes/nginx-service.yaml
 
 
 
