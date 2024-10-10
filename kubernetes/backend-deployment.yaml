@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:${{ github.sha }}
+        image: 920726643262.dkr.ecr.us-east-1.amazonaws.com/my-eks-deploy-pod-detail-app-backend:latest
         ports:
         - containerPort: 8080
    
